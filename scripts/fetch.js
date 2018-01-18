@@ -1,90 +1,91 @@
-
-
-function display_stories(feed_data) {
-  var xml_doc = $.parseXML(feed_data);
-  $xml = $(xml_doc);
-  $('#popup').html('<img src="images/logo.png" id="logo" /><br clear="all" />');
-  $('#logo')[0].addEventListener('click', function() {
-    open_item('http://lifehacker.com/')
-    window.close() } )
-
-  var items = $xml.find("item");
-  items.each(function(index, element) {
-    var post = parse_post(element);
-    var item = '';
-    var class2 = '';
-    if (index >= localStorage['unread_count']) {
-      // // console.log('visited');
-      item += '<div class="post read">';
-    }
-    else {
-      item += '<div class="post">'
-    }
-    item += '<span class="tag">' + post.tag + '</span>\
-          <a href="' + post.url + '">\
-            <div id="' + post.id + '" class="item">\
-              <img src="' + post.img + '" width="107" height="60" />\
-              <h4>' + post.title + '</h4>\
-              <span class="description">' + post.description + '...</span>\
-            </div>\
-          </a>';
-    item += '</div>';
-    $('#popup').append(item);
-    // TODO why isn't jQuery's .on defined?
-    var $item = $('div[id="' + post.id + '"]')
-    console.log('$item', $item)
-    $item[0].addEventListener('click', function() {
-      open_item(post.url) } )
-  });
-}
-
-/*function getRates() {
-    var reqParams = {
-            'action' : 'fetch_rates',
-            'url' : 'https://koinex.in/api/ticker'
-    };
-
-    chrome.extension.sendRequest(reqParams,function(response) {
-        bp.console.log('Response ',response);
-        //display_stories(response);
-    });
-}*/
-
-/*$(document).ready(function() {
-    bp.console.log('Ready');
-    getRates();
-});*/
-
-
-
-
 ;(function(W,D,$){
     'use strict';
-    var bp = chrome.extension.getBackgroundPage();
+    var bp = chrome.extension.getBackgroundPage(),
+        elems = {},
+        settings;
 
-    var cacheSelectors = function(){
-
+    var sendMessage = function(){
+        let [mode,data={},cb=function(){}] = arguments;
+        if(typeof data === 'function') cb = data;
+        chrome.runtime.sendMessage({mode:mode.toUpperCase(),data:data}, cb);
+        //chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+        //    console.log('Rx ',response.farewell);
+        //});
     }
 
-    var getRates = function () {
-        let reqParams = {
-            'action' : 'fetch_rates',
-            'url' : 'https://koinex.in/api/ticker'
-        };
-
-        chrome.extension.sendRequest(reqParams,function(response) {
-            bp.console.log('S Response ',response);
-            //display_stories(response);
+    var cacheSelectors = function(){
+        return new Promise((resolve,reject)=>{
+            elems = {
+                primaryBtn : $("[data-holder='CL_PRIMARY']"),  //"ul[data-holder='CL_PRIMARY']"
+                headingText : $("[data-holder='CL_HEADINGS']"),
+                seconderyButton : $("[data-holder='CL_SECONDARY']"),
+                currencyUnit : $("[data-holder='CL_CURRENCY_UNIT']"),
+                price : $("[data-holder='CL_PRICE']"),
+                otherCoins : $("[data-holder='CL_OHER_COINS']"),
+                otherCoinsParent : $("[data-holder='CL_OHER_COINS_PARENT']")
+            }
+            if(elems) resolve();
+            else reject();
         });
     }
 
-    var displayData = function(){
+    var displayLabels = function(){
+        getSettings(response=>{
+            settings = response;
+            let coins = settings.COINS;
+            elems.primaryBtn.html(coins[settings.COIN_IN_FOCUS]); //working here
+            elems.seconderyButton.html(settings.TEXT_IN_TOGGLE);
+            elems.headingText.html(settings.HEADING_TEXT);
+            elems.currencyUnit.html(settings.CURRENCY_SYMBOL);
+        });
+    }
+
+    var getSettings = function(cb){
+        sendMessage('get_settings',cb);
+    }
+
+    var getRates = function () {
+        sendMessage('get_rates',displayPriceData);
+    }
+
+    var displayPriceData = function(data){
+        elems.price.html(data.prices[settings.COIN_IN_FOCUS]);
+        for(let i of settings.COINS_TO_DISPLAY){
+            let temp = elems.otherCoins.clone();
+            bp.console.log('eye ',i,temp);
+            temp.find('span').html(data.prices[i]);
+            temp.find('em').html(settings.COINS[i]);
+            temp.show();
+            elems.otherCoinsParent.append(temp);
+        }
+        bp.console.log('debug ',data);
+        bp.console.log('settings ',settings);
 
     }
 
+    var uiFunc = function(){
+        W.addEventListener('click',function(e){
+            e.stopImmediatePropagation();
+            bp.console.log('debug clicked');
+        });
+    }
+
+
     var init = function(){
         bp.console.log('Ready');
-        getRates();
+        //cacheSelectors().then(function(){
+        //    displayLabels();
+        //
+        //    //getRates();
+        //});
+        new Promise((resolve,reject)=>{
+            cacheSelectors().then(resolve);
+        }).then(()=>{
+            displayLabels();
+            //uiFunc();
+        }).then(()=>{
+            getRates(displayPriceData);
+        });
     }
 
     W.addEventListener('load',init);
