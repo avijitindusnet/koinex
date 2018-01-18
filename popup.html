@@ -30,9 +30,8 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     <script src="scripts/modernizr.min.js"></script>
     <script src='scripts/jquery-1.6.1.min.js'></script>
-    <script src='scripts/handlebars.min.js'></script>
-    <script src='scripts/hb.templates.js'></script>
     <script src="scripts/fetch.js"></script>
+    <script src="scripts/progressbar.js"></script>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="styles/post.css" type="text/css"/>
 </head>
@@ -43,7 +42,7 @@
         <div class="pricing-switcher">
             <p class="fieldset">
                 <input type="radio" name="duration-1" value="monthly" id="monthly-1" checked>
-                <label for="monthly-1" data-holder="CL_PRIMARY">Loading...</label>
+                <label for="monthly-1" data-holder="CL_HEADINGS">Loading...</label>
                 <input type="radio" name="duration-1" value="yearly" id="yearly-1">
                 <label for="yearly-1" data-holder="CL_SECONDARY">Loading...</label>
                 <span class="switch"></span>
@@ -55,7 +54,7 @@
                 <ul class="pricing-wrapper">
                     <li data-type="monthly" class="is-visible">
                         <header class="pricing-header">
-                            <h2 data-holder="CL_HEADINGS">Loading...</h2>
+                            <h2 data-holder="CL_PRIMARY">Loading...</h2>
                             <div class="price">
                                 <span class="currency" data-holder="CL_CURRENCY_UNIT">$</span>
                                 <span class="value" data-holder="CL_PRICE">60</span>
@@ -71,7 +70,7 @@
                             </ul>
                         </div>
                         <footer class="pricing-footer">
-                            <a class="select" href="#">Go</a>
+                            <a class="select" href="#"><span data-holder="CL_REFRESH_TIMER_TEXT">Refreshing..</span><span data-holder="CL_REFRESH_TIMER">00</span></a>
                         </footer>
                     </li>
                 </ul>

@@ -22,8 +22,9 @@
         COIN_IN_FOCUS : 'XRP',
         COINS_TO_DISPLAY : ['BTC','ETH','MIOTA','LTC','BCH'],
         TEXT_IN_TOGGLE : 'Stats',
-        HEADING_TEXT : 'Current Price',
+        HEADING_TEXT : 'Price',
         CURRENCY_SYMBOL : '₹',
+        REFRESH_TIMER_TEXT : 'Refreshing in..',
         UPDATE_FREQ : 30,  //in seconds (absolutely no less than 30 seconds)
         DESKTOP_NOTIFICATION : true,
         NOTIFICATION_TYPE : 'PERIODIC', // periodic or conditional(like when above or below specific rate)
@@ -42,6 +43,13 @@
 	        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
 	    }).join(''));
 	}
+
+    var sendMessage = function(){
+        let [mode,data={},cb=function(){}] = arguments;
+        if(typeof data === 'function') cb = data;
+        chrome.runtime.sendMessage({mode:mode.toUpperCase(),data:data}, cb);
+    }
+
     var checkBrowserStorage = function(type) {
         if (type === 'localStorage' || type === 'sessionStorage') {
             try {
@@ -120,6 +128,7 @@
                 if(response){
                     removeStorageItem(priceStorageKeyName);
                     setStorageItem(priceStorageKeyName,response);
+                    sendMessage('REFRESHED',console.log);
                 }
             },response=>{
                 clearInterval(pulse);
