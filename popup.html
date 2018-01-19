@@ -1,27 +1,3 @@
-<!-- <html>
-  <head>
-    <script src='scripts/jquery-1.6.1.min.js'></script>
-    <script src='scripts/handlebars.min.js'></script>
-    <script src='scripts/hb.templates.js'></script>
-    <script src="scripts/fetch.js"></script>
-    <link rel="stylesheet" href="styles/post.css" type="text/css" />
-    <script id="entry-template" type="text/x-handlebars-template">
-      <div class="entry">
-        <h1>{{title}}</h1>
-        <div class="body">
-          {{body}}
-        </div>
-      </div>
-    </script>
-  </head>
-
-  <body>
-    <div id="popup">
-
-    </div>
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en" >
 
@@ -50,7 +26,7 @@
 
         <ul class="pricing-list bounce-invert">
             <li class="exclusive">
-                <ul class="pricing-wrapper">
+                <ul class="pricing-wrapper" data-holder="CL_PRICES">
                     <li data-type="monthly" class="is-visible">
                         <header class="pricing-header">
                             <h2 data-holder="CL_PRIMARY">Loading...</h2>
@@ -71,6 +47,42 @@
                         <footer class="pricing-footer">
                             <a class="select" href="#"><span data-holder="CL_REFRESH_TIMER_TEXT">Refreshing..</span><span data-holder="CL_REFRESH_TIMER">00</span></a>
                         </footer>
+                    </li>
+                </ul>
+
+                <ul class="pricing-wrapper" data-holder="CL_STATS" style="display:none;"> <!-- stats wrapper -->
+                    <li data-type="monthly" class="is-visible">
+                        <header class="pricing-header">
+                            <h2 data-holder="CL_PRIMARY">Loading...</h2>
+                        </header>
+                        <div class="pricing-body">
+                            <ul class="pricing-features" data-holder="">
+                                <li>
+                                    <span>Highest Bid: </span>
+                                    <em data-holder="CL_STATS_HIGHEST_BID">Loading..</em>
+                                </li>
+                                <li>
+                                    <span>Last traded Price: </span>
+                                    <em data-holder="CL_STATS_LAST_TRADED_PRICE">Loading..</em>
+                                </li>
+                                <li>
+                                    <span>Lowest Ask: </span>
+                                    <em data-holder="CL_STATS_LOWEST_ASK">Loading..</em>
+                                </li>
+                                <li>
+                                    <span>Max in Last 24 Hrs: </span>
+                                    <em data-holder="CL_STATS_MAX_24HRS">Loading..</em>
+                                </li>
+                                <li>
+                                    <span>Min in Last 24 Hrs: </span>
+                                    <em data-holder="CL_STATS_MIN_24HRS">Loading..</em>
+                                </li>
+                                <li>
+                                    <span>Volume in Last 24 Hrs: </span>
+                                    <em data-holder="CL_STATS_VOL_24HRS">Loading..</em>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
             </li>
