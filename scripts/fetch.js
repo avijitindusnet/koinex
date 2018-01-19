@@ -53,9 +53,11 @@
         bp.console.log('Data is getting refreshed');
         sendMessage('get_rates',displayPriceData);
     }
+
     var getTimeStamp = function(){
         return Date.now();
     }
+
     var tickRefreshTimer = function(time){
         bp.console.log('Tick timer ',time);
         clearInterval(refreshTicker);
@@ -91,7 +93,7 @@
                 getRates(displayPriceData);
                 break;
             default:
-                console.log('Handle default action FRONT ');
+                console.log('Handle default action FRONT ',mode);
                 break;
         }
     });
