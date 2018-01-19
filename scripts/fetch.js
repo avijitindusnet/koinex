@@ -2,7 +2,7 @@
     'use strict';
     var bp = chrome.extension.getBackgroundPage(),
         elems = {},
-        settings;
+        settings,refreshTicker;
 
     var sendMessage = function(){
         let [mode,data={},cb=function(){}] = arguments;
@@ -53,8 +53,19 @@
         bp.console.log('Data is getting refreshed');
         sendMessage('get_rates',displayPriceData);
     }
+    var getTimeStamp = function(){
+        return Date.now();
+    }
+    var tickRefreshTimer = function(time){
+        bp.console.log('Tick timer ',time);
+        clearInterval(refreshTicker);
+        refreshTicker = setInterval(function(){
+            elems.refreshTimer.html(--time);
+        },1000);
+    }
 
-    var displayPriceData = function(data){
+    var displayPriceData = function(priceData){
+        let {response:data, time:time} = priceData;
         elems.price.html(data.prices[settings.COIN_IN_FOCUS]);
         $('.removable').remove();
         for(let i of settings.COINS_TO_DISPLAY){
@@ -65,9 +76,12 @@
             temp.show();
             elems.otherCoinsParent.append(temp);
         }
-        bp.console.log('debug ',data);
-        bp.console.log('settings ',settings);
 
+        let refreshCounter = settings.UPDATE_FREQ - Math.round((getTimeStamp()-time)/1000);
+        elems.refreshTimer.html(refreshCounter);
+        tickRefreshTimer(refreshCounter);
+        bp.console.log('debug ',refreshCounter);
+        bp.console.log('settings ',settings);
     }
 
     chrome.extension.onMessage.addListener((request, sender, respond)=>{

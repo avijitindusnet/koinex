@@ -66,7 +66,6 @@
     }
 
     var setStorageItem = function(key, value) {
-        console.log('Set Storage Item ', key);
         var webStorageType = 'localStorage';
         var key = key.trim(),
             value = b64encode(JSON.stringify(value)) || '';
@@ -84,7 +83,6 @@
     };
 
     var removeStorageItem = function(key) {
-        console.log('Remove Storage Item ', key);
         if (key != '') localStorage.removeItem(key);
     };
 
@@ -120,14 +118,19 @@
     	}
     }
 
+    var getTimeStamp = function(){
+        return Date.now();
+    }
+
     var startPriceFetching = function(){
-        console.log('fetching in background');
-        pulse = setInterval(function(){
+        var fetchPrice = function(){
+            console.log('Fired XHR');
             makeXHR(apiUri).then(data =>{
                 let response = JSON.parse(data); //console.log(response);
                 if(response){
+                    let timeStamp = getTimeStamp();
                     removeStorageItem(priceStorageKeyName);
-                    setStorageItem(priceStorageKeyName,response);
+                    setStorageItem(priceStorageKeyName,{response:response, time:timeStamp});
                     sendMessage('REFRESHED',console.log);
                 }
             },response=>{
@@ -139,7 +142,15 @@
             }).catch(e=>{
                 console.error('ERROR! ',e);
             });
-        },defaultSettings.UPDATE_FREQ*1000);
+        };
+
+        let priceData = retrieveStorageItem(priceStorageKeyName),
+            currentTime = getTimeStamp(),
+            updateFrequency = defaultSettings.UPDATE_FREQ*1000,
+            timeDiff = Math.floor((currentTime - priceData.time)/1000);
+
+        (!priceData.time || timeDiff > updateFrequency) && fetchPrice();
+        pulse = setInterval(fetchPrice,defaultSettings.UPDATE_FREQ*1000);
     }
 
     var getRates = function(respond){
