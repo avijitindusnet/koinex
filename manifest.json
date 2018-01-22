@@ -24,7 +24,7 @@
 	],
 	"browser_action": {
     "default_icon": "images/48.png",
-    "default_title": "Crypto Rates",
+    "default_title": "Check current Crypto currency rates.",
     "default_popup": "popup.html"
   }
 }

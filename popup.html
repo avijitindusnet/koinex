@@ -5,7 +5,7 @@
     <title>Cryptocurrency Pricing</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
     <script src="scripts/modernizr.min.js"></script>
-    <script src='scripts/jquery-1.6.1.min.js'></script>
+    <script src='scripts/jquery-3.3.1.min.js'></script>
     <script src="scripts/script.js"></script>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="styles/post.css" type="text/css"/>
@@ -17,78 +17,78 @@
         <div class="pricing-switcher">
             <p class="fieldset">
                 <input type="radio" name="duration-1" value="monthly" id="monthly-1" checked>
-                <label for="monthly-1" data-holder="CL_HEADINGS">Loading...</label>
+                <label for="monthly-1" data-holder="CM_HEADINGS">CM_HEADINGS</label>
                 <input type="radio" name="duration-1" value="yearly" id="yearly-1">
-                <label for="yearly-1" data-holder="CL_SECONDARY">Loading...</label>
+                <label for="yearly-1" data-holder="CM_SECONDARY">CM_SECONDARY</label>
                 <span class="switch"></span>
 
-                <label  data-holder="CL_SETTINGS">Settings</label>
+                <label  data-holder="CM_SETTINGS">Settings</label>
             </p>
         </div>
 
         <ul class="pricing-list bounce-invert">
             <li class="exclusive">
-                <ul class="pricing-wrapper" data-holder="CL_PRICES">
+                <ul class="pricing-wrapper" data-holder="CM_PRICES">
                     <li data-type="monthly" class="is-visible">
                         <header class="pricing-header">
-                            <h2 data-holder="CL_PRIMARY">Loading...</h2>
+                            <h2 data-holder="CM_PRIMARY">CM_PRIMARY</h2>
                             <div class="price">
-                                <span class="currency" data-holder="CL_CURRENCY_UNIT">$</span>
-                                <span class="value" data-holder="CL_PRICE">60</span>
+                                <span class="currency" data-holder="CM_CURRENCY_UNIT">CM_CURRENCY_UNIT</span>
+                                <span class="value" data-holder="CM_PRICE">CM_PRICE</span>
                                 <span class="duration">coin</span>
                             </div>
                         </header>
                         <div class="pricing-body">
-                            <ul class="pricing-features" data-holder="CL_OHER_COINS_PARENT">
-                                <li data-holder="CL_OHER_COINS" style="display:none;">
+                            <ul class="pricing-features" data-holder="CM_OTHER_COINS_PARENT">
+                                <li data-holder="CM_OHER_COINS" style="display:none;">
                                     <em>15</em>
                                     <span>Email Accounts</span>
                                 </li>
                             </ul>
                         </div>
                         <footer class="pricing-footer">
-                            <a class="select" href="#"><span data-holder="CL_REFRESH_TIMER_TEXT">Refreshing..</span><span data-holder="CL_REFRESH_TIMER">00</span></a>
+                            <a class="select" href="#"><span data-holder="CM_REFRESH_TIMER_TEXT">CM_REFRESH_TIMER_TEXT</span><span data-holder="CM_REFRESH_TIMER">00</span></a>
                         </footer>
                     </li>
                 </ul>
 
-                <ul class="pricing-wrapper" data-holder="CL_STATS" style="display:none;"> <!-- stats wrapper -->
+                <ul class="pricing-wrapper" data-holder="CM_STATS" style="display:none;"> <!-- stats wrapper -->
                     <li data-type="monthly" class="is-visible">
                         <header class="pricing-header">
-                            <h2 data-holder="CL_PRIMARY">Loading...</h2>
+                            <h2 data-holder="CM_PRIMARY_STATS">CM_PRIMARY_STATS</h2>
                         </header>
                         <div class="pricing-body">
                             <ul class="pricing-features" data-holder="">
                                 <li>
                                     <span>Highest Bid: </span>
-                                    <em data-holder="CL_STATS_HIGHEST_BID">Loading..</em>
+                                    <em data-holder="CM_STATS_HIGHEST_BID">CM_STATS_HIGHEST_BID</em>
                                 </li>
                                 <li>
                                     <span>Last traded Price: </span>
-                                    <em data-holder="CL_STATS_LAST_TRADED_PRICE">Loading..</em>
+                                    <em data-holder="CM_STATS_LAST_TRADED_PRICE">CM_STATS_LAST_TRADED_PRICE</em>
                                 </li>
                                 <li>
                                     <span>Lowest Ask: </span>
-                                    <em data-holder="CL_STATS_LOWEST_ASK">Loading..</em>
+                                    <em data-holder="CM_STATS_LOWEST_ASK">CM_STATS_LOWEST_ASK</em>
                                 </li>
                                 <li>
                                     <span>Max in Last 24 Hrs: </span>
-                                    <em data-holder="CL_STATS_MAX_24HRS">Loading..</em>
+                                    <em data-holder="CM_STATS_MAX_24HRS">CM_STATS_MAX_24HRS</em>
                                 </li>
                                 <li>
                                     <span>Min in Last 24 Hrs: </span>
-                                    <em data-holder="CL_STATS_MIN_24HRS">Loading..</em>
+                                    <em data-holder="CM_STATS_MIN_24HRS">CM_STATS_MIN_24HRS</em>
                                 </li>
                                 <li>
                                     <span>Volume in Last 24 Hrs: </span>
-                                    <em data-holder="CL_STATS_VOL_24HRS">Loading..</em>
+                                    <em data-holder="CM_STATS_VOL_24HRS">CM_STATS_VOL_24HRS</em>
                                 </li>
                             </ul>
                         </div>
                     </li>
                 </ul>
 
-                <ul class="pricing-wrapper" data-holder="CL_SETTINGS_TAB" style="display:none;"> <!-- stats wrapper -->
+                <ul class="pricing-wrapper" data-holder="CM_SETTINGS_TAB" style="display:none;"> <!-- stats wrapper -->
                     <li data-type="monthly" class="is-visible">
                         <header class="pricing-header">
                             <h2 data-holder="">Settings</h2>
@@ -97,25 +97,57 @@
                             <ul class="pricing-features" data-holder="">
                                 <li>
                                     <span>Coin to focus</span>
+                                    <select data-holder="CM_FOCUSED_COIN">
+                                        <option>ABC</option>
+                                        <option>DEF</option>
+                                    </select>
                                 </li>
                                 <li>
                                     <span>Coins to display</span>
+                                        <input type="checkbox" data-holder="CM_WATCHED_COINS">
+                                        <label for="coding">BTC</label>
+                                        <input type="checkbox" data-holder="CM_WATCHED_COINS">
+                                        <label for="coding">MIOTA</label>
                                 </li>
                                 <li>
                                     <span>Update Frequency</span>
+                                    <select data-holder="CM_UPDATE_FREQUENCY">
+                                        <option>1</option>
+                                        <option>2</option>
+                                    </select>
                                 </li>
                                 <li>
                                     <span>Desktop Notification</span>
+                                    <select data-holder="CM_SHOW_NOTIFICATION">
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select>
                                 </li>
                                 <li>
-                                    <span>Periodic Notification</span>
+                                    <span>Periodic Price Notification</span>
+                                    <select data-holder="CM_PERIODIC_FREQUENCY">
+                                        <option>Never</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                    </select>
                                 </li>
                                 <li>
-                                    <span>Notification Interval</span>
+                                    <span>Lowest Price</span>
+                                    <input type="number" data-holder="CM_LOWER_LIMIT">
+                                </li>
+                                <li>
+                                    <span>Highest Price</span>
+                                    <input type="number" data-holder="CM_UPPER_LIMIT">
+                                </li>
+                                <li>
+                                    <button data-holder="CM_SAVE_SETTINGS">Save</button>
+                                    <button data-holder="CM_RESET_SETTINGS">Reset</button>
                                 </li>
                             </ul>
+
                         </div>
                     </li>
+
                 </ul>
             </li>
         </ul>
