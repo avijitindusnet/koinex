@@ -1,5 +1,6 @@
 ;(function(W,D,$){
     'use strict';
+    console.log('Default settings ',W.defaultSettings);
     var bp = chrome.extension.getBackgroundPage(),
         elems = {},
         settings,refreshTicker;
@@ -8,10 +9,6 @@
         let [mode,data={},cb=function(){}] = arguments;
         if(typeof data === 'function') cb = data;
         chrome.runtime.sendMessage({mode:mode.toUpperCase(),data:data}, cb);
-    }
-
-    var _log = function(){
-        sendMessage('log',arguments);
     }
 
     var cacheSelectors = function(){
@@ -120,6 +117,14 @@
             $('.pricing-wrapper').hide(2,function(){
                 elems.cmSettingsTab.show();
             });
+        });
+        elems.cmSaveSettings[0].addEventListener('click',function(e){ //settings clicked
+            e.stopImmediatePropagation();
+            console.log('Save');
+        });
+        elems.cmResetSettings[0].addEventListener('click',function(e){ //settings clicked
+            e.stopImmediatePropagation();
+            console.log('reset');
         });
     }
 

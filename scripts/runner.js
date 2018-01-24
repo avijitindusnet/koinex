@@ -1,44 +1,10 @@
-;(function(){
+;(function(W){
     'use strict';
     var priceStorageKeyName = 'priceData',
         pulse,
         execptionTimer,
-        retryAfterTime = 300*1000,
-        apiUri = 'https://koinex.in/api/ticker';
+        defaultSettings = W.defaultSettings;
 
-    var coins = {
-            BCH   : 'Bitcoin Cash (BCH)',
-            BTC   : 'Bitcoin (BTC)',
-            ETH   : 'Ethereum (ETH)',
-            GNT   : 'Golem (GNT)',
-            LTC   : 'Litecoin (LTC)',
-          MIOTA   : 'IOTA (MIOTA)',
-            OMG   : 'OmiseGO (OMG)',
-            XRP   : 'Ripple (XRP)'
-    };
-
-    var defaultSettings = {
-        LOG_ENABLED:true,
-    	COINS :coins,
-        COIN_IN_FOCUS : 'XRP',
-        COINS_TO_DISPLAY : ['BTC','ETH','MIOTA','LTC','BCH'],
-        TEXT_IN_TOGGLE : 'Stats',
-        HEADING_TEXT : 'Price',
-        CURRENCY_SYMBOL : '₹',
-        REFRESH_TIMER_TEXT : 'Refreshing in..',
-        UPDATE_FREQ : 30,  //in seconds (absolutely no less than 30 seconds)
-        DESKTOP_NOTIFICATION : true,
-        NOTIFICATION_TYPE : 'PERIODIC', // periodic or conditional(like when above or below specific rate)
-        NOTIFICATION_FREQ : 300, // in seconds
-        DISPLAY_MINMAXRATES : true
-    };
-
-    var _log = function() {
-        if (defaultSettings.LOG_ENABLED === true || localStorage.getItem('LOG_ENABLED') === 'true') {
-            var args = Array.prototype.slice.call(arguments);
-            console.log.apply(console, args);
-        }
-    }
 
 	var	b64encode = function(str) {
 	    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
@@ -51,6 +17,12 @@
 	        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
 	    }).join(''));
 	}
+
+    var showNotification = function(){
+        var notification = new Notification("Hi there!",{body: 'randomQuote',icon: 'images/48.png',});
+        // Then show the notification.
+        //notification.show();
+    }
 
     var sendMessage = function(){
         let [mode,data={},cb=function(){}] = arguments;
@@ -95,12 +67,13 @@
     };
 
     var makeXHR = function(url='', method='GET'){
+        _log('make xhr ',url,method);
         return new Promise((resolve,reject) => {
             if(!url || !method) throw new Error('Ivalid url and or method!');
             let xhr = new XMLHttpRequest();
             xhr.open(method, url);
             xhr.onload = function () {
-                _log('XHR Status ',this.status);
+                _log('XHR Status ',this.status); //showNotification();
                 if (this.status >= 200 && this.status < 300) resolve(xhr.response);
                 else reject({status: this.status,statusText: xhr.statusText});
             };
@@ -131,8 +104,9 @@
     }
 
     var startPriceFetching = function(){
+        clearInterval(execptionTimer);
         var fetchPrice = function(){
-            makeXHR(apiUri).then(data =>{
+            makeXHR(defaultSettings.API_URI).then(data =>{
                 let response = JSON.parse(data); _log('Fired XHR ',response);
                 if(response){
                     let timeStamp = getTimeStamp();
@@ -142,10 +116,10 @@
                 }
             },response=>{
                 clearInterval(pulse);
-                _log('Failed to fetch price. It will automatically reattempt in 2 minutes');
-                execptionTimer = setTimeot(function(){
+                _log('Failed to fetch price. It will automatically reattempt.');
+                execptionTimer = setTimeout(function(){
                     startPriceFetching();
-                },retryAfterTime);
+                }, defaultSettings.RETRY_AFTER);
             }).catch(e=>{
                 _error('ERROR! ',e);
             });
@@ -189,5 +163,5 @@
         //chrome-extension://gpbceecojbahbhbafonjjfdcebcbglka/popup.html
         // Then show the notification.
         //notification.show();
-})();
+})(window);
 
