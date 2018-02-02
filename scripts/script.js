@@ -14,6 +14,7 @@
     var cacheSelectors = function(){
         return new Promise((resolve,reject)=>{
             let tempElems = document.querySelectorAll('[data-holder]');
+            console.groupCollapsed('Elements');
             for(let i in tempElems){
                 if(tempElems[i].dataset && tempElems[i].dataset.holder){
                     let tempdata = tempElems[i].dataset.holder.toLowerCase();
@@ -22,6 +23,7 @@
                     elems[camelCased] = $(tempElems[i]);
                 }
             }
+            console.groupEnd();
             if(elems) resolve();
             else reject();
         });
@@ -38,6 +40,7 @@
             elems.cmCurrencyUnit.html(settings.CURRENCY_SYMBOL);
             elems.cmRefreshTimerText.html(settings.REFRESH_TIMER_TEXT);
             elems.cmRefreshTimer.html(settings.UPDATE_FREQ);
+            populateSettingsTab();
         });
     }
 
@@ -87,6 +90,31 @@
         tickRefreshTimer(refreshCounter);
     }
 
+
+    var saveUserSettings = function(){
+        //read settings first
+        //send them to runner
+        //save them in localstorage
+        //refresh current settings
+        var coinInFocus = elems.cmFocusedCoin.val();
+        var updateFreq = elems.cmUpdateFrequency.val();
+        var coinsToWatch = $('.watched-coins:checked').val();
+
+
+        _log('save user Settings ',coinInFocus, updateFreq, coinsToWatch);
+    }
+
+    var populateSettingsTab = function(){
+        _log('Populate settings tab ',settings);
+        for(let i in settings.COINS){
+            let temp = elems. cmFocusOption.clone();
+            temp.html(settings.COINS[i]);
+            temp.show();
+            elems.cmFocusedCoin.append(temp);
+        }
+    }
+
+
     chrome.extension.onMessage.addListener((request, sender, respond)=>{
         let {mode:mode,data:data} = request;
         switch (mode) {
@@ -120,7 +148,7 @@
         });
         elems.cmSaveSettings[0].addEventListener('click',function(e){ //settings clicked
             e.stopImmediatePropagation();
-            console.log('Save');
+            saveUserSettings();
         });
         elems.cmResetSettings[0].addEventListener('click',function(e){ //settings clicked
             e.stopImmediatePropagation();
